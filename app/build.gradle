@@ -1,0 +1,58 @@
+plugins { id 'com.android.application' }
+
+// Real AdMob IDs come from env vars (GitHub secrets) for RELEASE only.
+// Debug builds ALWAYS use Google's official test IDs (never click your own real ads).
+def TEST_APP_ID  = "ca-app-pub-3940256099942544~3347511713"
+def TEST_REWARD  = "ca-app-pub-3940256099942544/5224354917"
+def REAL_APP_ID  = System.getenv("ADMOB_APP_ID")      ?: TEST_APP_ID
+def REAL_REWARD  = System.getenv("ADMOB_REWARDED_ID") ?: TEST_REWARD
+
+android {
+    namespace 'com.rubel.bubblepop'
+    compileSdk 36
+    defaultConfig {
+        applicationId "com.rubel.bubblepop"
+        minSdk 23
+        targetSdk 36
+        versionCode 1
+        versionName "1.0.0"
+    }
+    buildFeatures { buildConfig true }
+
+    signingConfigs {
+        release {
+            def ks = System.getenv("KEYSTORE_PATH")
+            if (ks) {
+                storeFile file(ks)
+                storePassword System.getenv("KEYSTORE_PASSWORD")
+                keyAlias System.getenv("KEY_ALIAS")
+                keyPassword System.getenv("KEY_PASSWORD")
+            }
+        }
+    }
+    buildTypes {
+        debug {
+            manifestPlaceholders = [admobAppId: TEST_APP_ID]
+            buildConfigField "String", "REWARDED_UNIT_ID", "\"${TEST_REWARD}\""
+        }
+        release {
+            manifestPlaceholders = [admobAppId: REAL_APP_ID]
+            buildConfigField "String", "REWARDED_UNIT_ID", "\"${REAL_REWARD}\""
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (System.getenv("KEYSTORE_PATH")) signingConfig signingConfigs.release
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'com.google.android.gms:play-services-ads:23.6.0'
+    implementation 'com.google.android.ump:user-messaging-platform:3.1.0'
+    implementation 'androidx.activity:activity:1.9.3'
+    implementation 'androidx.core:core:1.13.1'
+}
