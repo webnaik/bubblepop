@@ -48,8 +48,8 @@ Download now and start popping!
 - Phone screenshots (min 2, max 8): store/screenshots/*.png (1080x1920)
 
 ## Contact details (required)
-- Email: modina00codiblog@gmail.com
-- Privacy policy URL: https://webnaik.github.io/bubblepop/privacy.html
+- Email: YOUR_EMAIL_HERE
+- Privacy policy URL: https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO/privacy.html
 
 ## App content declarations
 - Privacy policy: URL above
