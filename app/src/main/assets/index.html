@@ -10,7 +10,11 @@
 *{box-sizing:inherit}
 html,body{height:100%;margin:0}
 body{background:radial-gradient(120% 80% at 50% 0%,var(--b1) 0%,var(--b2) 70%);color:#eef1ff;font-family:'Sora',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none}
-.hud{display:flex;gap:8px;width:min(92vw,400px);align-items:stretch}
+body{--extra:0px;--ww:min(96vw,calc((100vh - 112px - var(--extra) - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))*0.642857),620px)}
+body.adv{--extra:38px}
+@supports(height:100dvh){body{--ww:min(96vw,calc((100dvh - 112px - var(--extra) - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))*0.642857),620px)}}
+.hud,.wrap,#goal{flex:none}
+.hud{display:flex;gap:8px;width:var(--ww);align-items:stretch}
 .card{flex:1;background:#ffffff0d;border:1px solid #ffffff1c;border-radius:14px;padding:7px 12px;min-width:0}
 .card small{display:block;font-size:11px;color:#98a6dc;font-weight:500}
 .card b{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
@@ -20,7 +24,7 @@ body{background:radial-gradient(120% 80% at 50% 0%,var(--b1) 0%,var(--b2) 70%);c
 .ctl{width:44px;display:flex;flex-direction:column;gap:6px}
 .ctl button{flex:1;border-radius:12px;border:1px solid #ffffff1c;background:#ffffff0d;color:#c7d2ff;display:flex;align-items:center;justify-content:center;padding:0}
 .ctl button:focus-visible{outline:2px solid #fff}
-.wrap{position:relative;height:calc(100% - 96px);max-height:640px;aspect-ratio:360/560;max-width:92vw}
+.wrap{position:relative;width:var(--ww);height:auto;aspect-ratio:360/560}
 canvas{width:100%;height:100%;display:block;border-radius:22px;background:radial-gradient(circle,#ffffff0b 1px,transparent 1.6px) 0 0/18px 18px;border:1px solid #ffffff22;box-shadow:0 24px 60px -20px #000c,inset 0 1px 0 #ffffff18}
 #ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#060918bb;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:22px}
 .panel{width:80%;text-align:center;padding:28px 22px;border-radius:20px;background:linear-gradient(#ffffff14,#ffffff08);border:1px solid #ffffff26}
@@ -58,9 +62,9 @@ canvas{width:100%;height:100%;display:block;border-radius:22px;background:radial
 .stars{font-size:22px;color:#ffc94a;letter-spacing:4px}
 #toast{position:absolute;top:12px;left:50%;transform:translate(-50%,-14px);opacity:0;pointer-events:none;padding:8px 14px;border-radius:999px;background:#10163fdd;border:1px solid #ffffff30;font-size:13px;font-weight:600;transition:.3s;white-space:nowrap;z-index:5}
 #toast.on{opacity:1;transform:translate(-50%,0)}
-#goal{display:none;align-items:center;justify-content:center;gap:8px;height:26px;padding:0 14px;border-radius:999px;background:#ffffff0d;border:1px solid #ffffff1c;font-size:12.5px;font-weight:600;max-width:92vw}
+#goal{display:none;align-items:center;justify-content:center;gap:8px;height:26px;padding:0 14px;border-radius:999px;background:#ffffff0d;border:1px solid #ffffff1c;font-size:12.5px;font-weight:600;max-width:var(--ww)}
 .gd{width:12px;height:12px;border-radius:50%;display:inline-block;flex:none}
-body.adv .wrap{height:calc(100% - 132px)}
+
 .lvgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
 .lvgrid button{padding:8px 0;font-size:15px;border-radius:12px;background:#ffffff14;color:#fff;border:1px solid #ffffff2a;box-shadow:none;line-height:1.2;font-weight:700}
 .lvgrid button small{display:block;font-size:9px;color:#ffc94a;font-weight:500;letter-spacing:1px}
@@ -144,7 +148,7 @@ body.adv .wrap{height:calc(100% - 132px)}
 <script>
 const cv=document.getElementById('c');let ctx=cv.getContext('2d');
 const W=360,H=560,R=18,D=36,RH=31.18,COLS=10,LOSE=12,SY=H-52,ROWS=16;
-const DPR=Math.min(2,window.devicePixelRatio||1);cv.width=W*DPR;cv.height=H*DPR;ctx.scale(DPR,DPR);
+const DPR=Math.min(3,window.devicePixelRatio||1);cv.width=W*DPR;cv.height=H*DPR;ctx.scale(DPR,DPR);
 const COL=[
  {b:'#ff5d73',l:'#ffa3b0',d:'#c4304a'},
  {b:'#ffb938',l:'#ffe39a',d:'#c47a12'},
@@ -268,7 +272,7 @@ function step(){
 const SPR={};
 function sprite(k,r){
   const key=k+'|'+r+'|'+(set.cb?1:0),h=SPR[key];if(h)return h;
-  const sz=Math.ceil(r*2+4),d=Math.min(2,window.devicePixelRatio||1),c=document.createElement('canvas');
+  const sz=Math.ceil(r*2+4),d=Math.min(3,window.devicePixelRatio||1),c=document.createElement('canvas');
   c.width=c.height=Math.round(sz*d);const g=c.getContext('2d');g.scale(d,d);
   const m=ctx;ctx=g;bubRaw(sz/2,sz/2,k,r,0);ctx=m;c.lw=sz;return SPR[key]=c;
 }
