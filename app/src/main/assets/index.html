@@ -162,7 +162,7 @@ const COL=[
 document.getElementById('dots').innerHTML=COL.slice(0,5).map(c=>`<i style="background:radial-gradient(circle at 35% 30%,${c.l},${c.b} 55%,${c.d})"></i>`).join('');
 let thunders=[];
 let grid,off,score,best=0,cur,nxt,ang=-Math.PI/2,shot,shots,over=true,fall=[],pops=[],parts=[],texts=[],ignore=false;
-let level=1,combo=0,banner=null,shake=0,muted=false,AC=null,daily=false,dkey='',dbest=0,rng=Math.random,pw={rainbow:1,bird:2,thunder:1},armed=null,paused=false,T=0,trail=[];
+let level=1,combo=0,banner=null,shake=0,muted=false,AC=null,daily=false,dkey='',dbest=0,rng=Math.random,pw={rainbow:1,bird:1,thunder:1},armed=null,paused=false,T=0,trail=[];
 const PZ='<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
 function mb(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 try{best=+localStorage.getItem('bb')||0;muted=localStorage.getItem('bbm')==='1'}catch(e){}
@@ -193,7 +193,7 @@ const SFX={
   level:()=>[523,659,784,1047].forEach((f,i)=>tone(f,.22,'triangle',.14,0,i*.09)),
   over:()=>[392,330,262,196].forEach((f,i)=>tone(f,.3,'sawtooth',.08,0,i*.16))
 };
-function levelUp(){const par=12+level*2,st=lvShots<=par?3:lvShots<=par*1.5?2:1;lvShots=0;stats.stars+=st;if(st===3)stats.s3=1;level++;stats.maxLevel=Math.max(stats.maxLevel,level);if(pw.bird<3)pw.bird++;if(level%2===0&&pw.thunder<3){pw.thunder++;texts.push({x:W/2,y:196,t:0,s:tr('earnThunder')})}banner={t:0,s:tr('lvN',level),sub:tr('cleared','\u2605'.repeat(st)+'\u2606'.repeat(3-st))};SFX.level();vib([20,40,20,40,60])}
+function levelUp(){const par=12+level*2,st=lvShots<=par?3:lvShots<=par*1.5?2:1;lvShots=0;stats.stars+=st;if(st===3)stats.s3=1;level++;stats.maxLevel=Math.max(stats.maxLevel,level);if(level%3===0&&pw.bird<2){pw.bird++;texts.push({x:W/2,y:222,t:0,s:tr('earnBird')})}banner={t:0,s:tr('lvN',level),sub:tr('cleared','\u2605'.repeat(st)+'\u2606'.repeat(3-st))};SFX.level();vib([20,40,20,40,60])}
 const par=r=>(r+off)&1, nc=r=>par(r)?COLS-1:COLS;
 const px=(r,c)=>R+c*D+(par(r)?R:0), py=r=>R+r*RH;
 const rnd=()=>Math.floor(rng()*(adv?CF.colors:Math.min(5,2+level)));
@@ -202,7 +202,7 @@ function present(){const s=new Set();grid.forEach(r=>r.forEach(v=>{if(v>=0&&v!==
 function pick(){const p=present();return p.length?p[Math.floor(rng()*p.length)]:rnd()}
 function mkRow(r){return Array.from({length:COLS},(_,c)=>c<nc(r)?sv():-1)}
 function fill(n){for(let r=0;r<n;r++)grid[r]=mkRow(r)}
-function init(){lvShots=0;anim={};bird=null;bolts=[];thunders=[];flash=0;praise=null;level=1;combo=0;banner=null;shake=0;paused=false;pw={rainbow:1,bird:2,thunder:1};armed=null;trail=[];dkey=new Date().toISOString().slice(0,10).replace(/-/g,'');if(daily){level=3;rng=mb(+dkey);try{dbest=+localStorage.getItem('bbd'+dkey)||0}catch(e){dbest=0}}else rng=adv?mb(777+adv*31):Math.random;off=0;grid=Array.from({length:ROWS},()=>Array(COLS).fill(-1));if(endless)level=3;if(tmode){level=2;tl=60}fill(adv?CF.rows:6);score=0;shots=0;over=false;fall=[];pops=[];parts=[];texts=[];shot=null;cur=pick();nxt=pick();hud();document.getElementById('ov').style.display='none'}
+function init(){lvShots=0;anim={};bird=null;bolts=[];thunders=[];flash=0;praise=null;level=1;combo=0;banner=null;shake=0;paused=false;pw={rainbow:1,bird:1,thunder:thFree()?1:0};armed=null;trail=[];dkey=new Date().toISOString().slice(0,10).replace(/-/g,'');if(daily){level=3;rng=mb(+dkey);try{dbest=+localStorage.getItem('bbd'+dkey)||0}catch(e){dbest=0}}else rng=adv?mb(777+adv*31):Math.random;off=0;grid=Array.from({length:ROWS},()=>Array(COLS).fill(-1));if(endless)level=3;if(tmode){level=2;tl=60}fill(adv?CF.rows:6);score=0;shots=0;over=false;fall=[];pops=[];parts=[];texts=[];shot=null;cur=pick();nxt=pick();hud();document.getElementById('ov').style.display='none'}
 function hud(){
   const g=id=>document.getElementById(id);g('sc').textContent=score;g('ls').textContent=tr('score');g('lb').textContent=tr('best');
   let gl='';
@@ -241,7 +241,7 @@ function popGroup(r,c){
   for(let x=0;x<nc(0);x++)if(grid[0][x]>=0){ok.add(x);s.push([0,x])}
   for(let i=0;i<s.length;i++)nb(...s[i]).forEach(([y,x])=>{const id=y*20+x;if(grid[y][x]>=0&&!ok.has(id)){ok.add(id);s.push([y,x])}});
   for(let y=0;y<ROWS;y++)for(let x=0;x<nc(y);x++)if(grid[y][x]>=0&&!ok.has(y*20+x)){fall.push({x:px(y,x),y:py(y),vy:-2,c:COL[cc(grid[y][x])]});grid[y][x]=-1;gain+=20;nf++}
-  score+=gain;SFX.pop(q.length);if(nf){SFX.drop();mq('drop',nf)}shake=Math.min(9,q.length+nf);if(combo===5&&pw.thunder<3){pw.thunder++;SFX.earn();texts.push({x:W/2,y:196,t:0,s:tr('earnThunder')})}if(combo===3&&pw.rainbow<3){pw.rainbow++;SFX.earn();texts.push({x:W/2,y:170,t:0,s:tr('earnWild')})}if((q.length+nf>=8||nf>=4)&&pw.bird<3){pw.bird++;SFX.earn();texts.push({x:W/2,y:222,t:0,s:tr('earnBird')})}texts.push({x:mx/q.length,y:my/q.length,t:0,s:'+'+gain+(combo>1?'  x'+combo:'')});
+  score+=gain;SFX.pop(q.length);if(nf){SFX.drop();mq('drop',nf)}shake=Math.min(9,q.length+nf);if(combo===3&&pw.rainbow<3){pw.rainbow++;SFX.earn();texts.push({x:W/2,y:170,t:0,s:tr('earnWild')})}if((q.length+nf>=14||nf>=8)&&pw.bird<2){pw.bird++;SFX.earn();texts.push({x:W/2,y:222,t:0,s:tr('earnBird')})}texts.push({x:mx/q.length,y:my/q.length,t:0,s:'+'+gain+(combo>1?'  x'+combo:'')});
 }
 function end(win){over=true;paused=false;win?SFX.level():SFX.over();vib([80,60,120]);if(adv){endAdv(win);return}
   let st=0,b;
@@ -578,7 +578,7 @@ function settings(back){
 applySkin(set.skin);
 const I={
 en:{level:'Level',score:'Score',best:'Best',shots:'Shots left',swap:'Swap',nextRow:'Next row',limit:'Limit',wild:'Wild',
- lvN:n=>'Level '+n,bird:'Bird',earnBird:'Bird earned',thunder:'Thunder',earnThunder:'Thunder earned',thOfferT:'Out of Thunder',watchAd:'Watch ad: +1 Thunder',later:'Not now',adOffer:n=>'Watch a short ad to get 1 Thunder. '+n+' left today.',adWait:s=>'Next ad is ready in '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0'),adDone:'Daily ad limit reached. Come back tomorrow, or earn Thunder by clearing levels and making x5 combos.',adFail:'Ad not available, try again later',a_bird:'Bird watcher',d_bird:'Use the Bird 5 times',boss:n=>'Boss level '+n,cleared:x=>'Cleared '+x+'  \u00b7  rows come faster',boardClear:'Board cleared +500',earnWild:'Wild bubble earned',
+ lvN:n=>'Level '+n,bird:'Bird',earnBird:'Bird earned',thunder:'Thunder',earnThunder:'Thunder earned',thOfferT:'Out of Thunder',watchAd:'Watch ad: +1 Thunder',later:'Not now',adOffer:n=>'Watch a short ad to get 1 Thunder. '+n+' left today.',adWait:s=>'Next ad is ready in '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0'),adDone:'Daily ad limit reached (5 per day). Come back tomorrow for more Thunder.',adFail:'Ad not available, try again later',a_bird:'Bird watcher',d_bird:'Use the Bird 5 times',boss:n=>'Boss level '+n,cleared:x=>'Cleared '+x+'  \u00b7  rows come faster',boardClear:'Board cleared +500',earnWild:'Wild bubble earned',
  title:'Bubble Shooter - Pop Mania',menuDescOld:'Match three or more bubbles of one color. Crack ice, drop stones, chain combos. Daily challenge: one shared board per day, 30 shots.',
  adv:'Adventure',classic:'Classic',daily:'Daily challenge',stats:'Stats',settings:'Settings',back:'Back',resume:'Resume',restart:'Restart',paused:'Paused',pausedMsg:'Take a breath.',
  again:'Play again',retryDaily:'Retry daily',classicMode:'Classic mode',over:'Game over',dailyDone:'Challenge complete',
@@ -622,7 +622,7 @@ function goalHtml(){
   return tr('g_score',score,CF.target);
 }
 function goalPlain(){return CF.goal==='clear'?tr('g_clear'):CF.goal==='color'?tr('g_colorb'):tr('g_scoreb',CF.target)}
-function begin(m,n){ac();daily=m==='daily';endless=m==='endless';tmode=m==='time';adv=m==='adv'?n:null;CF=adv?cfg(adv):null;stats.games++;mw=adv?Math.floor((adv-1)/20)%6:0;useTheme(set.skin);init();musicSync();if(meta.bb>0){pw.bird=Math.min(3,pw.bird+meta.bb);meta.bb=0;saveMeta();hud()}
+function begin(m,n){ac();daily=m==='daily';endless=m==='endless';tmode=m==='time';adv=m==='adv'?n:null;CF=adv?cfg(adv):null;stats.games++;mw=adv?Math.floor((adv-1)/20)%6:0;useTheme(set.skin);init();musicSync();if(meta.bb>0){pw.bird=Math.min(2,pw.bird+meta.bb);meta.bb=0;saveMeta();hud()}
   if(adv){const w=(adv-1)%20===0;banner={t:0,s:tr(CF.boss?'boss':'lvN',adv),sub:w?WORLDS[mw].n+' \u00b7 '+WORLDS[mw].s:goalPlain()}}}
 function advStart(n){tutGate(()=>begin('adv',n))}
 function restart(){adv?advStart(adv):go(curMode())}
@@ -657,7 +657,7 @@ function birdStrike(cx,cy,sx,sy){
   const nf=sweep(),gain=Math.round((tg.length*15+nf*20)*(sk.sc||1));
   score+=gain;stats.pops+=tg.length;stats.birds=(stats.birds||0)+1;combo=0;
   if(sk.coin)addCoins(tg.length*sk.coin);
-  if(sk.ret&&Math.random()<sk.ret&&pw.bird<3){pw.bird++;texts.push({x:W/2,y:226,t:0,s:tr('birdBack')})}
+  if(sk.ret&&Math.random()<sk.ret*.5&&pw.bird<2){pw.bird++;texts.push({x:W/2,y:226,t:0,s:tr('birdBack')})}
   mq('bird',1);if(nf)mq('drop',nf);if(tmode)tl=Math.min(90,tl+3);
   const far=tg.filter(t=>t.d>RD*.68),mid=tg.filter(t=>t.d>RD*.25&&t.d<=RD*.68),cen=tg.filter(t=>t.d<=RD*.25),avg=a=>a.reduce((q,t)=>q+t.d,0)/a.length;
   const r0=Math.hypot(sx-cx,sy-cy),keys=[[0,r0]];let u=0;
@@ -816,7 +816,7 @@ function chestView(back){
 function openChest(back){
   meta.chests--;stats.opened=(stats.opened||0)+1;
   let txt;
-  if(Math.random()<.35){meta.bb=(meta.bb||0)+1;txt=tr('gotBird')}
+  if(Math.random()<.15){meta.bb=(meta.bb||0)+1;txt=tr('gotBird')}
   else{const c=30+Math.floor(Math.random()*71);meta.coins+=c;txt=tr('gotCoins',c)}
   saveMeta();SFX.level();vib([30,40,60]);chk();
   show(tr('chest'),chestSvg(true)+'<div class="reward">'+txt+'</div>',[...(meta.chests>0?[[tr('openAnother'),()=>openChest(back)]]:[]),[tr('back'),back]]);
@@ -877,7 +877,7 @@ Object.assign(I.en,{
  missions:'Missions',missionDone:'Mission complete!',m_pop:(n,c)=>'Pop '+n+' '+c+' bubbles',col0:'Coral',col1:'Amber',col2:'Jade',col3:'Azure',col4:'Violet',
  m_combo:n=>'Reach a x'+n+' combo',m_bird:n=>'Use the Bird '+n+' times',m_adv:n=>'Clear '+n+' Adventure levels',m_score:n=>'Score '+n+' in one game',m_drop:n=>'Drop '+n+' bubbles',
  shop:'Shop',themes:'Themes',cannons:'Cannons',equip:'Equip',equipped:'Equipped',noCoins:'Not enough coins',birds:'Birds',
- perk0:'Classic bird',perk1:'Bigger circle (+25%)',perk2:'+50% bird score',perk3:'+1 coin per bubble',perk4:'30% chance the Bird returns',clearLv:n=>'Clear level '+n,newBird:n=>'New bird unlocked: '+n,
+ perk0:'Classic bird',perk1:'Bigger circle (+25%)',perk2:'+50% bird score',perk3:'+1 coin per bubble',perk4:'15% chance the Bird returns',clearLv:n=>'Clear level '+n,newBird:n=>'New bird unlocked: '+n,
  endless:'Endless',timeAtk:'Time attack',time:'Time',nextRowIn:'Next row in',timeUp:'Time up',timeRes:(s,b)=>'Time attack. Score '+s+', best '+b+'.',endRes:(s,b)=>'Endless. Score '+s+', best '+b+'.',
  share:'Share',shareBtn:'Share image',longpress:'Press and hold the image to save it.',copied:'Copied',shareText:s=>'I scored '+s+' in Bubble Shooter - Pop Mania! Can you beat it?',canYouBeat:'Can you beat my score?',
  closeScore:n=>'So close! Only '+n+' points short.',closeLeft:n=>'So close! Only '+n+' bubbles left.',moreShots:'+3 shots (30 coins)',
@@ -1000,6 +1000,9 @@ function toMenu(){over=true;paused=false;bird=null;shot=null;adv=null;CF=null;da
 // Android wrapper sets window.NativeRewarded=(onReward,onFail)=>{...AdMob...}; in a browser a test ad is simulated.
 const AD_MAX=5,AD_GAP=120000;
 function adState(){const d=new Date().toLocaleDateString('en-CA');if(!meta.ad||meta.ad.d!==d)meta.ad={d,n:0,t:(meta.ad&&meta.ad.t)||0};return meta.ad}
+// 1 free Thunder per DAY across the whole game (all modes); extra Thunder only via rewarded ads
+function thToday(){return new Date().toLocaleDateString('en-CA')}
+function thFree(){return meta.thUsed!==thToday()}
 function adLeft(){return AD_MAX-adState().n}
 function adShow(ok,fail){
   if(typeof window.NativeRewarded==='function'){try{window.NativeRewarded(ok,fail)}catch(e){fail()}return}
@@ -1028,7 +1031,7 @@ function aim(e){
   if(a>0)a=x<W/2?-Math.PI+.17:-.17;
   ang=Math.max(-Math.PI+.17,Math.min(-.17,a));
 }
-function fire(){if(over||shot||paused||bird)return;if(armed==='thunder'){armed=null;pw.thunder--;thunderStrike();return}SFX.shoot();shot={x:W/2,y:SY,vx:Math.cos(ang)*16,vy:Math.sin(ang)*16,c:cur,kind:armed};if(armed){pw[armed]--;armed=null}}
+function fire(){if(over||shot||paused||bird)return;if(armed==='thunder'){armed=null;pw.thunder--;if(thFree()){meta.thUsed=thToday();saveMeta()}thunderStrike();return}SFX.shoot();shot={x:W/2,y:SY,vx:Math.cos(ang)*16,vy:Math.sin(ang)*16,c:cur,kind:armed};if(armed){pw[armed]--;armed=null}}
 cv.addEventListener('pointerdown',e=>{const [x,y]=pt(e);if(!over&&!shot)for(const [sx,k] of [[108,'rainbow'],[252,'bird'],[324,'thunder']])if(Math.hypot(x-sx,y-SY-6)<26){if(pw[k]>0){armed=armed===k?null:k;SFX.swap()}else if(k==='thunder')thunderOffer();ignore=true;return}if(!over&&!shot&&x<76&&y>SY-24){[cur,nxt]=[nxt,cur];SFX.swap();ignore=true;return}aim(e)});
 cv.addEventListener('pointermove',e=>{if(!ignore)aim(e)});
 cv.addEventListener('pointerup',e=>{if(ignore){ignore=false;return}aim(e);fire()});
