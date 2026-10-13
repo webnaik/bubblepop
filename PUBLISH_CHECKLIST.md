@@ -2,7 +2,7 @@
 
 ## A. Aage ja lagbe (tomar kaj)
 1. Google Play Developer account (one-time $25 fee).
-2. AdMob account > Apps > Add app (Android, "Bubble Shooter: Pop Mania", package com.rubel.bubblepop) > Rewarded ad unit banao.
+2. AdMob account > Apps > Add app (Android, "Bubble Shooter: Pop Mania", package com.noorbyte.bubblepop) > Rewarded ad unit banao.
    Pabe: App ID (~) ar Rewarded unit ID (/). Eigulo GitHub secrets-e dao (PRIVATE/GITHUB_SECRETS.txt).
 3. AdMob > Privacy & messaging > EEA/UK consent message (GDPR) create + publish koro.
 

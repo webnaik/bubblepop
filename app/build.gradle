@@ -8,10 +8,10 @@ def REAL_APP_ID  = System.getenv("ADMOB_APP_ID")      ?: TEST_APP_ID
 def REAL_REWARD  = System.getenv("ADMOB_REWARDED_ID") ?: TEST_REWARD
 
 android {
-    namespace 'com.rubel.bubblepop'
+    namespace 'com.noorbyte.bubblepop'
     compileSdk 36
     defaultConfig {
-        applicationId "com.rubel.bubblepop"
+        applicationId "com.noorbyte.bubblepop"
         minSdk 23
         targetSdk 36
         versionCode 1

@@ -1,4 +1,4 @@
-package com.rubel.bubblepop;
+package com.noorbyte.bubblepop;
 
 import android.annotation.SuppressLint;
 import android.os.Build;

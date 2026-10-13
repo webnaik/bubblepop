@@ -1,2 +1,2 @@
--keepclassmembers class com.rubel.bubblepop.MainActivity$* { @android.webkit.JavascriptInterface <methods>; }
+-keepclassmembers class com.noorbyte.bubblepop.MainActivity$* { @android.webkit.JavascriptInterface <methods>; }
 -keepattributes JavascriptInterface
