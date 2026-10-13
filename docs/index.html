@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Noorbyte | Mobile Games &amp; Apps</title>
+<meta name="description" content="Noorbyte builds polished mobile games and apps. Home of Bubble Shooter: Pop Mania.">
+<meta name="theme-color" content="#070b1f">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Noorbyte | Mobile Games &amp; Apps">
+<meta property="og:description" content="Noorbyte builds polished mobile games and apps. Home of Bubble Shooter: Pop Mania.">
+<meta property="og:image" content="https://webnaik.github.io/bubblepop/assets/banner.jpg">
+<style>
+:root{
+  --bg:#070b1f; --bg2:#0d1333; --card:rgba(255,255,255,.05); --line:rgba(255,255,255,.10);
+  --text:#eef1ff; --muted:#a9b3da; --gold:#ffc24a; --cyan:#35c8ff; --pink:#ff5a78; --green:#2ee6a6; --violet:#a66bff;
+  --radius:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;height:auto;display:block}
+.wrap{width:min(1120px,92%);margin:0 auto}
+
+/* background glow */
+.glow{position:fixed;inset:0;z-index:-1;background:
+  radial-gradient(60% 50% at 15% 0%,rgba(53,200,255,.18),transparent 70%),
+  radial-gradient(50% 45% at 90% 10%,rgba(166,107,255,.20),transparent 70%),
+  radial-gradient(60% 50% at 50% 100%,rgba(255,90,120,.10),transparent 70%),var(--bg)}
+
+/* nav */
+header{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(7,11,31,.72);border-bottom:1px solid var(--line)}
+nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:.2px}
+.logo i{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-style:normal;font-size:18px;
+  background:linear-gradient(135deg,var(--cyan),var(--violet));box-shadow:0 6px 18px rgba(53,200,255,.35)}
+.logo b{color:var(--gold)}
+.links{display:flex;gap:26px;font-size:15px;color:var(--muted)}
+.links a:hover{color:#fff}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:999px;font-weight:700;font-size:15px;border:1px solid transparent;transition:.2s}
+.btn.primary{background:linear-gradient(135deg,var(--gold),#ff9d3d);color:#1a1230;box-shadow:0 10px 26px rgba(255,170,60,.30)}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(255,170,60,.42)}
+.btn.ghost{border-color:var(--line);background:var(--card);color:var(--text)}
+.btn.ghost:hover{border-color:rgba(255,255,255,.3)}
+.btn.off{opacity:.65;cursor:default;pointer-events:none}
+.navcta{padding:9px 18px;font-size:14px}
+
+/* hero */
+.hero{padding:88px 0 70px;text-align:center}
+.pill{display:inline-block;padding:7px 16px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:13px;letter-spacing:.4px;margin-bottom:22px}
+.pill span{color:var(--green)}
+h1{font-size:clamp(40px,8vw,76px);line-height:1.05;font-weight:900;letter-spacing:-1.5px}
+.grad{background:linear-gradient(90deg,var(--cyan),var(--violet) 50%,var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{max-width:640px;margin:22px auto 0;color:var(--muted);font-size:clamp(16px,2.2vw,19px)}
+.cta{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:34px}
+.stats{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:46px}
+.stat{padding:14px 22px;border-radius:16px;background:var(--card);border:1px solid var(--line);min-width:150px}
+.stat b{display:block;font-size:19px}
+.stat small{color:var(--muted);font-size:13px}
+
+/* sections */
+section{padding:80px 0}
+.eyebrow{color:var(--cyan);font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase}
+h2{font-size:clamp(28px,4.6vw,44px);line-height:1.15;font-weight:800;letter-spacing:-.6px;margin-top:10px}
+.sub{color:var(--muted);max-width:620px;margin-top:14px}
+.head{margin-bottom:44px}
+
+/* featured game */
+.game{display:grid;grid-template-columns:1.05fr 1fr;gap:44px;align-items:center;padding:34px;border-radius:28px;
+  background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid var(--line)}
+.gtop{display:flex;align-items:center;gap:18px;margin-bottom:18px}
+.gtop img{width:84px;height:84px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.gtop h3{font-size:26px;line-height:1.2}
+.tag{display:inline-block;margin-top:6px;padding:3px 12px;border-radius:999px;background:rgba(46,230,166,.14);color:var(--green);font-size:12.5px;font-weight:700}
+.game p{color:var(--muted)}
+.feat{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:12px 18px;margin:24px 0 28px}
+.feat li{display:flex;gap:10px;font-size:15px;color:#dfe5ff}
+.feat li::before{content:"";flex:none;width:9px;height:9px;margin-top:9px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--pink))}
+.banner{border-radius:20px;border:1px solid var(--line);overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.45)}
+
+/* screenshots */
+.shots{display:flex;gap:20px;overflow-x:auto;padding:6px 4px 22px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.shots::-webkit-scrollbar{height:8px}
+.shots::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:8px}
+.shot{flex:none;width:230px;scroll-snap-align:start;border-radius:26px;overflow:hidden;border:1px solid var(--line);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{padding:28px;border-radius:var(--radius);background:var(--card);border:1px solid var(--line);transition:.25s}
+.card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.25)}
+.ico{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:24px;margin-bottom:18px}
+.c1{background:rgba(255,90,120,.16)}.c2{background:rgba(53,200,255,.16)}.c3{background:rgba(166,107,255,.18)}
+.card h3{font-size:19px;margin-bottom:8px}
+.card p{color:var(--muted);font-size:15px}
+
+/* about + contact */
+.about{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start}
+.about p{color:var(--muted);margin-top:14px}
+.vals{display:grid;gap:14px}
+.val{padding:20px 22px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.val b{display:block;margin-bottom:2px}
+.val span{color:var(--muted);font-size:14.5px}
+.contact{text-align:center;padding:56px 28px;border-radius:28px;border:1px solid var(--line);
+  background:radial-gradient(70% 120% at 50% 0%,rgba(166,107,255,.22),rgba(255,255,255,.03))}
+.contact p{color:var(--muted);max-width:520px;margin:14px auto 28px}
+
+footer{border-top:1px solid var(--line);padding:30px 0;margin-top:30px;color:var(--muted);font-size:14px}
+.foot{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center}
+.foot a:hover{color:#fff}
+.flinks{display:flex;gap:22px}
+
+@media(max-width:860px){
+  .links{display:none}
+  .game{grid-template-columns:1fr;padding:22px;gap:30px}
+  .grid{grid-template-columns:1fr}
+  .about{grid-template-columns:1fr}
+  .hero{padding:60px 0 44px}
+  section{padding:56px 0}
+  .feat{grid-template-columns:1fr}
+  .shot{width:200px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="#top"><i>N</i><span>Noor<b>byte</b></span></a>
+      <div class="links">
+        <a href="#games">Games</a>
+        <a href="#build">What we build</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <a class="btn primary navcta" href="mailto:modina00codiblog@gmail.com">Get in touch</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div class="pill"><span>●</span> Independent mobile developer</div>
+    <h1>We build <span class="grad">fun, polished</span><br>games &amp; apps.</h1>
+    <p class="lead">Noorbyte is a mobile studio focused on smooth, easy-to-pick-up games and useful apps for Android, made with care for how they look, feel and play.</p>
+    <div class="cta">
+      <a class="btn primary" href="#games">See our game</a>
+      <a class="btn ghost" href="#contact">Contact us</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>Android</b><small>Platform</small></div>
+      <div class="stat"><b>Offline-friendly</b><small>Play anywhere</small></div>
+      <div class="stat"><b>No account</b><small>Just install &amp; play</small></div>
+    </div>
+  </div>
+
+  <section id="games">
+    <div class="wrap">
+      <div class="head">
+        <div class="eyebrow">Our game</div>
+        <h2>Bubble Shooter: Pop Mania</h2>
+        <p class="sub">Our first release: a bright, satisfying bubble popping puzzle with levels, daily challenges and power-ups.</p>
+      </div>
+
+      <div class="game">
+        <div>
+          <div class="gtop">
+            <img src="assets/icon.png" alt="Bubble Shooter: Pop Mania icon" width="84" height="84">
+            <div>
+              <h3>Bubble Shooter: Pop Mania</h3>
+              <span class="tag">Coming soon on Google Play</span>
+            </div>
+          </div>
+          <p>Drag to aim, release to shoot, match three or more bubbles and clear the board before it reaches the limit line. Easy to learn, hard to put down.</p>
+          <ul class="feat">
+            <li>Adventure levels with star ratings</li>
+            <li>Classic, Endless and Time Attack</li>
+            <li>Daily Challenge and daily streak</li>
+            <li>Wild, Bird and Thunder power-ups</li>
+            <li>Themes and birds to collect</li>
+            <li>Plays offline, no account needed</li>
+          </ul>
+          <div class="cta" style="justify-content:flex-start;margin-top:0">
+            <span class="btn primary off">Google Play: coming soon</span>
+            <a class="btn ghost" href="privacy.html">Privacy policy</a>
+          </div>
+        </div>
+        <div class="banner">
+          <img src="assets/banner.jpg" alt="Bubble Shooter: Pop Mania artwork" width="1024" height="500" loading="lazy">
+        </div>
+      </div>
+
+      <div class="head" style="margin:56px 0 18px">
+        <div class="eyebrow">Gameplay</div>
+        <h2 style="font-size:clamp(22px,3.4vw,30px)">A look inside</h2>
+      </div>
+      <div class="shots">
+        <div class="shot"><img src="assets/shot3.jpg" alt="Gameplay screenshot" width="540" height="960" loading="lazy"></div>
+        <div class="shot"><img src="assets/shot4.jpg" alt="Gameplay with power-ups" width="540" height="960" loading="lazy"></div>
+        <div class="shot"><img src="assets/shot2.jpg" alt="Adventure level select" width="540" height="960" loading="lazy"></div>
+        <div class="shot"><img src="assets/shot1.jpg" alt="Main menu" width="540" height="960" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="build">
+    <div class="wrap">
+      <div class="head">
+        <div class="eyebrow">What we build</div>
+        <h2>Games and apps, built to last</h2>
+        <p class="sub">We start with games today and are growing into everyday apps. More releases are on the way under the Noorbyte name.</p>
+      </div>
+      <div class="grid">
+        <div class="card"><div class="ico c1">🎮</div><h3>Casual games</h3><p>Quick to learn, smooth to play and fun for short breaks or long sessions.</p></div>
+        <div class="card"><div class="ico c2">📱</div><h3>Useful apps</h3><p>Simple, fast and focused mobile apps that solve a real everyday need.</p></div>
+        <div class="card"><div class="ico c3">✨</div><h3>Care for detail</h3><p>Clean visuals, responsive controls and thoughtful polish on every screen.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about">
+      <div>
+        <div class="eyebrow">About</div>
+        <h2>Small studio, big attention to quality</h2>
+        <p>Noorbyte is an independent developer building games and apps for Android. We care about performance, clear design and respecting players: no forced accounts, and ads that are optional and rewarded.</p>
+        <p>Bubble Shooter: Pop Mania is our first title, and the first of many.</p>
+      </div>
+      <div class="vals">
+        <div class="val"><b>Player first</b><span>Fair progression, no account required, optional rewarded ads only.</span></div>
+        <div class="val"><b>Privacy minded</b><span>Game progress stays on your device. Read our <a href="privacy.html" style="color:var(--cyan)">privacy policy</a>.</span></div>
+        <div class="val"><b>Always improving</b><span>We keep updating our games and apps with fixes and new content.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" style="padding-top:20px">
+    <div class="wrap">
+      <div class="contact">
+        <div class="eyebrow">Contact</div>
+        <h2>Let&rsquo;s talk</h2>
+        <p>Questions, feedback, bug reports or business enquiries? Send us an email and we&rsquo;ll get back to you.</p>
+        <a class="btn primary" href="mailto:modina00codiblog@gmail.com">modina00codiblog@gmail.com</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>&copy; <span id="y">2026</span> Noorbyte. All rights reserved.</div>
+    <div class="flinks">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="mailto:modina00codiblog@gmail.com">Contact</a>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('y').textContent=new Date().getFullYear()</script>
+</body>
+</html>
